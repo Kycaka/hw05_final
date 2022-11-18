@@ -38,7 +38,8 @@ class PostModelTest(TestCase):
         """Проверка help_text у post."""
         feild_help_texts = {
             'text': 'Текст нового поста',
-            'group': 'Группа, к которой будет относиться пост', }
+            'group': 'Группа, к которой будет относиться пост',
+        }
         for value, expected in feild_help_texts.items():
             with self.subTest(value=value):
                 help_text = self.post._meta.get_field(value).help_text
@@ -129,9 +130,9 @@ class CommentModelTest(TestCase):
         field_verboses = {
             'post': 'Пост',
             'author': 'Автор',
-            'text': 'Коментарий',
+            'text': 'Комментарий',
             'created': 'Создан',
-            'updated': 'Обнавлен',
+            'updated': 'Обновлен',
             'active': 'Активен',
         }
         for value, expected in field_verboses.items():

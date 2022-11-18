@@ -1,4 +1,3 @@
-# users/forms.py
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
@@ -13,4 +12,5 @@ class CreationForm(UserCreationForm):
             'first_name',
             'last_name',
             'username',
-            'email')
+            'email'
+        )

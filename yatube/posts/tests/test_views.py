@@ -74,13 +74,16 @@ class PostPagesTests(TestCase):
                 response = self.authorized_client.get(reverse_page)
                 self.assertIsInstance(
                     response.context['form'].fields['text'],
-                    forms.fields.CharField)
+                    forms.fields.CharField
+                )
                 self.assertIsInstance(
                     response.context['form'].fields['group'],
-                    forms.fields.ChoiceField)
+                    forms.fields.ChoiceField
+                )
                 self.assertIsInstance(
                     response.context['form'].fields['image'],
-                    forms.fields.ImageField)
+                    forms.fields.ImageField
+                )
 
     def test_index_page_show_correct_context(self):
         """Шаблон index.html сформирован с правильным контекстом."""
@@ -92,7 +95,8 @@ class PostPagesTests(TestCase):
         response = self.authorized_client.get(
             reverse(
                 'posts:group_list',
-                kwargs={'slug': self.group.slug})
+                kwargs={'slug': self.group.slug}
+            )
         )
         self.assertEqual(response.context['group'], self.group)
         self.check_post_info(response.context['page_obj'][0])
@@ -102,7 +106,9 @@ class PostPagesTests(TestCase):
         response = self.authorized_client.get(
             reverse(
                 'posts:profile',
-                kwargs={'username': self.user.username}))
+                kwargs={'username': self.user.username}
+            )
+        )
         self.assertEqual(response.context['author'], self.user)
         self.check_post_info(response.context['page_obj'][0])
 
@@ -209,7 +215,9 @@ class FollowViewsTest(TestCase):
         self.follower_client.post(
             reverse(
                 'posts:profile_follow',
-                kwargs={'username': self.post_follower}))
+                kwargs={'username': self.post_follower}
+            )
+        )
         follow = Follow.objects.all().latest('id')
         self.assertEqual(Follow.objects.count(), count_follow + 1)
         self.assertEqual(follow.author_id, self.post_follower.id)
@@ -224,26 +232,34 @@ class FollowViewsTest(TestCase):
         self.follower_client.post(
             reverse(
                 'posts:profile_unfollow',
-                kwargs={'username': self.post_follower}))
+                kwargs={'username': self.post_follower}
+            )
+        )
         self.assertEqual(Follow.objects.count(), count_follow - 1)
+        self.assertFalse(Follow.objects.exists())
 
     def test_follow_on_authors(self):
         """Проверка записей у тех кто подписан."""
         post = Post.objects.create(
             author=self.post_autor,
-            text="Подпишись на меня")
+            text='Подпишись на меня'
+        )
         Follow.objects.create(
             user=self.post_follower,
-            author=self.post_autor)
+            author=self.post_autor
+        )
         response = self.author_client.get(
-            reverse('posts:follow_index'))
+            reverse('posts:follow_index')
+        )
         self.assertIn(post, response.context['page_obj'].object_list)
 
     def test_notfollow_on_authors(self):
         """Проверка записей у тех кто не подписан."""
         post = Post.objects.create(
             author=self.post_autor,
-            text="Подпишись на меня")
+            text='Подпишись на меня'
+        )
         response = self.author_client.get(
-            reverse('posts:follow_index'))
+            reverse('posts:follow_index')
+        )
         self.assertNotIn(post, response.context['page_obj'].object_list)

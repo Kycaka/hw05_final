@@ -72,23 +72,29 @@ class Comment(models.Model):
         Post,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Пост')
+        verbose_name='Пост'
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Автор')
+        verbose_name='Автор'
+    )
     text = models.TextField(
-        verbose_name='Коментарий')
+        verbose_name='Комментарий'
+    )
     created = models.DateTimeField(
         auto_now_add=True,
-        verbose_name='Создан')
+        verbose_name='Создан'
+    )
     updated = models.DateTimeField(
         auto_now=True,
-        verbose_name='Обнавлен')
+        verbose_name='Обновлен'
+    )
     active = models.BooleanField(
         default=True,
-        verbose_name='Активен')
+        verbose_name='Активен'
+    )
 
     class Meta:
         ordering = ['-created']
@@ -104,12 +110,14 @@ class Follow(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='follower',
-        verbose_name='Пользователь')
+        verbose_name='Пользователь'
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='following',
-        verbose_name='Автор')
+        verbose_name='Автор'
+    )
 
     class Meta:
         verbose_name_plural = 'Подписки'

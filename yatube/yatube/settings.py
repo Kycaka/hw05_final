@@ -25,8 +25,6 @@ LOGIN_URL = 'users:login'
 
 LOGIN_REDIRECT_URL = 'posts:index'
 
-#  LOGOUT_REDIRECT_URL = 'posts:index'
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,12 +118,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
-
 NUMBER_POST = 10
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-
-# INTERNAL_IPS = ('127.0.0.1', '192.168.0.1',)

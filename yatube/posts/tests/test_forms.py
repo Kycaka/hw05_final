@@ -20,9 +20,11 @@ class PostFormTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.post_author = User.objects.create_user(
-            username='post_author')
+            username='post_author'
+        )
         cls.comm_author = User.objects.create_user(
-            username='comm_author')
+            username='comm_author'
+        )
         cls.group = Group.objects.create(
             title='Тестовое название группы',
             slug='test_slug',
@@ -38,8 +40,8 @@ class PostFormTests(TestCase):
         self.guest_user = Client()
         self.authorized_user = Client()
         self.authorized_user.force_login(self.post_author)
-        self.auth_user_comm = Client()
-        self.auth_user_comm.force_login(self.comm_author)
+        self.authorized_user_comment = Client()
+        self.authorized_user_comment.force_login(self.comm_author)
 
     def test_authorized_user_create_post(self):
         """Проверка создания записи авторизированным клиентом."""
@@ -71,7 +73,8 @@ class PostFormTests(TestCase):
             response,
             reverse(
                 'posts:profile',
-                kwargs={'username': self.post_author.username})
+                kwargs={'username': self.post_author.username}
+            )
         )
         self.assertEqual(Post.objects.count(), posts_count + 1)
         post = Post.objects.latest('id')
@@ -85,37 +88,45 @@ class PostFormTests(TestCase):
         comments_count = Comment.objects.count()
         post = Post.objects.create(
             text='Текст поста для редактирования',
-            author=self.post_author)
+            author=self.post_author
+        )
         form_data = {'text': 'Тестовый коментарий'}
         response = self.auth_user_comm.post(
             reverse(
                 'posts:add_comment',
-                kwargs={'post_id': post.id}),
+                kwargs={'post_id': post.id}
+            ),
             data=form_data,
-            follow=True)
+            follow=True
+        )
         comment = Comment.objects.latest('id')
+        self.assertRedirects(
+            response, reverse('posts:post_detail', args={post.id})
+        )
         self.assertEqual(Comment.objects.count(), comments_count + 1)
         self.assertEqual(comment.text, form_data['text'])
         self.assertEqual(comment.author, self.comm_author)
         self.assertEqual(comment.post_id, post.id)
-        self.assertRedirects(
-            response, reverse('posts:post_detail', args={post.id}))
 
     def test_nonauthorized_user_create_comment(self):
         """Проверка создания комментария не авторизированным пользователем."""
         comments_count = Comment.objects.count()
         post = Post.objects.create(
             text='Текст поста для редактирования',
-            author=self.post_author)
+            author=self.post_author
+        )
         form_data = {'text': 'Тестовый коментарий'}
         response = self.guest_user.post(
             reverse(
                 'posts:add_comment',
-                kwargs={'post_id': post.id}),
+                kwargs={'post_id': post.id}
+            ),
             data=form_data,
-            follow=True)
+            follow=True
+        )
         redirect = reverse('login') + '?next=' + reverse(
-            'posts:add_comment', kwargs={'post_id': post.id})
+            'posts:add_comment', kwargs={'post_id': post.id}
+        )
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(Comment.objects.count(), comments_count)
         self.assertRedirects(response, redirect)
@@ -124,19 +135,27 @@ class PostFormTests(TestCase):
         """Проверка редактирования записи авторизированным клиентом."""
         post = Post.objects.create(
             text='Текст поста для редактирования',
-            author=self.post_author)
+            author=self.post_author
+        )
         form_data = {
             'text': 'Отредактированный текст поста',
-            'group': self.group.id}
+            'group': self.group.id
+        }
         response = self.authorized_user.post(
             reverse(
                 'posts:edit',
-                args=[post.id]),
+                args=[post.id]
+            ),
             data=form_data,
-            follow=True)
+            follow=True
+        )
         self.assertRedirects(
             response,
-            reverse('posts:post_detail', kwargs={'post_id': post.id}))
+            reverse(
+                'posts:post_detail',
+                kwargs={'post_id': post.id}
+            )
+        )
         post_one = Post.objects.latest('id')
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(post_one.text, form_data['text'])
