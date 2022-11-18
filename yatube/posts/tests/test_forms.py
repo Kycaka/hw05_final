@@ -91,7 +91,7 @@ class PostFormTests(TestCase):
             author=self.post_author
         )
         form_data = {'text': 'Тестовый коментарий'}
-        response = self.auth_user_comm.post(
+        response = self.authorized_user_comment.post(
             reverse(
                 'posts:add_comment',
                 kwargs={'post_id': post.id}
