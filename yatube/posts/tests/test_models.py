@@ -28,7 +28,8 @@ class PostModelTest(TestCase):
             'text': 'Текст поста',
             'pub_date': 'Дата публикации',
             'author': 'Автор',
-            'group': 'Группа', }
+            'group': 'Группа',
+        }
         for value, expected in field_verboses.items():
             with self.subTest(value=value):
                 verbose_name = self.post._meta.get_field(value).verbose_name

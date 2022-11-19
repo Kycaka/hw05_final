@@ -236,7 +236,12 @@ class FollowViewsTest(TestCase):
             )
         )
         self.assertEqual(Follow.objects.count(), count_follow - 1)
-        self.assertFalse(Follow.objects.exists())
+        self.assertFalse(
+            Follow.objects.filter(
+                user=self.post_autor,
+                author=self.post_follower
+            ).exists()
+        )
 
     def test_follow_on_authors(self):
         """Проверка записей у тех кто подписан."""
