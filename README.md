@@ -1,3 +1,12 @@
-# hw05_final
-
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml)
+# yatube_project
+Социальная сеть блогеров
+## Описание
+- Возможность создать собственную страницу на которой будут видны записи автора
+- Пользователи смогут заходить на чужие страницы, подписываться на авторов и комментировать их записи.
+- Автор может выбрать имя и уникальный адрес для своей страницы
+### Технологии
+Python 3.7
+Django 2.2.19
+### Запуск проекта в dev-режиме
+- Создайте и активируйте виртуальное окружение
+- Установите зависимости из файла requirements.txt
