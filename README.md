@@ -29,7 +29,7 @@
 Клонируем проект:
 
 ```bash
-git clone https://github.com/themasterid/hw05_final.git
+git clone https://github.com/Kycaka/hw05_final.git
 ```
 
 или
